@@ -10,6 +10,7 @@ namespace Sacrimatch3
         [SerializeField]
         private List<SOGem> gems = new List<SOGem>();
 
+        private bool dragging = false;
         private int startX = 0;
         private int startY = 0;
 
@@ -29,13 +30,17 @@ namespace Sacrimatch3
             if (Input.GetMouseButtonDown(0))
             {
                 grid.GetGridPosition(GetMousePosition(), out startX, out startY);
+                dragging = true;
             }
 
-            if (Input.GetMouseButtonUp(0))
+            if (dragging)
             {
                 grid.GetGridPosition(GetMousePosition(), out int x, out int y);
 
-                SwapGems(startX, startY, x, y);
+                if (SwapGems(startX, startY, x, y) || Input.GetMouseButtonUp(0))
+                {
+                    dragging = false;
+                }
             }
         }
 
@@ -52,12 +57,22 @@ namespace Sacrimatch3
             });
         }
 
-        private void SwapGems(int x1, int y1, int x2, int y2)
+        private bool SwapGems(int x1, int y1, int x2, int y2)
         {
-            GemController gem1 = generator.Grid.GetValue(x1, y1);
-            GemController gem2 = generator.Grid.GetValue(x2, y2);
+            int diffX = Mathf.Abs(x1 - x2);
+            int diffY = Mathf.Abs(y1 - y2);
+            
+            if ((diffX == 1 && diffY == 0) || (diffX == 0 && diffY == 1))
+            {
+                GemController gem1 = generator.Grid.GetValue(x1, y1);
+                GemController gem2 = generator.Grid.GetValue(x2, y2);
 
-            gem1.Swap(gem2);
+                gem1.Swap(gem2);
+
+                return true;
+            }
+
+            return false;
         }
 
         private void UpdateVisuals()
