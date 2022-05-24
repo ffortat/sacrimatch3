@@ -97,7 +97,7 @@ namespace Sacrimatch3
             grid.ForEach((int x, int y, GemController gemController) =>
             {
                 Gem gem = Instantiate(gemPrefab, grid.GetWorldPosition(x, y), Quaternion.identity);
-                gem.Sprite = gems[UnityEngine.Random.Range(0, gems.Count)].sprite;
+                gem.Setup(gems[UnityEngine.Random.Range(0, gems.Count)]);
 
                 gemController.Gem = gem;
             });
@@ -143,7 +143,93 @@ namespace Sacrimatch3
 
         private bool FindMatchAndDestroy()
         {
+            bool[,] seen = new bool[grid.Width, grid.Height];
+
+            grid.ForEach((int x, int y, GemController gemController) =>
+            {
+                if (!seen[x, y])
+                {
+                    List<List<GemController>> linksList = GetMatch3Links(gemController);
+
+                    if (linksList.Count > 0)
+                    {
+                        // TODO add links list to global list
+                        // TODO set all links elements as seen
+                    }
+                    else
+                    {
+                        seen[x, y] = true;
+                    }
+                }
+            });
+            // Pour chaque position chercher les liens si pas déjà visité
+            // Noter les positions visitées dans les liens enregistrés
+
             return false;
+        }
+
+        private List<List<GemController>> GetMatch3Links(GemController gem)
+        {
+            List<List<GemController>> linksList = new List<List<GemController>>();
+
+            int leftLinks = 0;
+            int rightLinks = 0;
+            int upLinks = 0;
+            int downLinks = 0;
+
+            for (int i = gem.X - 1; i >= 0; i -= 1)
+            {
+                if (grid.GetValue(i, gem.Y).Gem.Type == gem.Gem.Type)
+                {
+                    leftLinks += 1;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            for (int i = gem.X + 1; i < grid.Width; i += 1)
+            {
+                if (grid.GetValue(i, gem.Y).Gem.Type == gem.Gem.Type)
+                {
+                    rightLinks += 1;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            // TODO Add gems on horizontal line as a link
+
+            for (int i = gem.Y - 1; i >= 0; i -= 1)
+            {
+                if (grid.GetValue(gem.X, i).Gem.Type == gem.Gem.Type)
+                {
+                    upLinks += 1;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            for (int i = gem.Y + 1; i < grid.Height; i += 1)
+            {
+                if (grid.GetValue(gem.X, i).Gem.Type == gem.Gem.Type)
+                {
+                    downLinks += 1;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            // TODO Add gems on vertical line as a link
+
+            return linksList;
         }
 
         private Vector3 GetMousePosition()
