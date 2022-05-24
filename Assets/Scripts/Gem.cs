@@ -2,10 +2,10 @@ using UnityEngine;
 
 namespace Sacrimatch3
 {
-    public class GemVisual : MonoBehaviour
+    public class Gem : MonoBehaviour
     {
         [SerializeField]
-        private SpriteRenderer renderer = null;
+        private new SpriteRenderer renderer = null;
 
         private void Awake()
         {
