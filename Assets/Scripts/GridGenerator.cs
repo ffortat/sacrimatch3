@@ -7,15 +7,10 @@ namespace Sacrimatch3
     {
         private Grid<GemController> grid;
 
-        public GridGenerator(List<SOGem> gems)
+        public GridGenerator()
         {
             grid = new Grid<GemController>(10, 15, 1f, new Vector3(-5, -10), (Grid<GemController> grid, int x, int y) => new GemController(grid, x, y));
             grid.ShowDebug = true;
-
-            grid.ForEach((int x, int y, GemController gemController) =>
-            {
-                gemController.Gem = gems[Random.Range(0, gems.Count)];
-            });
         }
 
         public Grid<GemController> Grid { get => grid; }
