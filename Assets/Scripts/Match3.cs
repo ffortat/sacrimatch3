@@ -5,6 +5,14 @@ namespace Sacrimatch3
 {
     public class Match3 : MonoBehaviour
     {
+        public enum State
+        {
+            Busy,
+            Input,
+            Matching,
+            Pause,
+        }
+
         [SerializeField]
         private Gem gemPrefab = null;
         [SerializeField]
@@ -13,6 +21,8 @@ namespace Sacrimatch3
         private bool dragging = false;
         private int startX = 0;
         private int startY = 0;
+
+        private State state = State.Busy;
 
         private GridGenerator generator = null;
         private Grid<GemController> grid = null;
@@ -27,20 +37,40 @@ namespace Sacrimatch3
         {
             UpdateVisuals();
 
-            if (Input.GetMouseButtonDown(0))
+            switch (state)
             {
-                grid.GetGridPosition(GetMousePosition(), out startX, out startY);
-                dragging = true;
-            }
+                case State.Busy:
+                    break;
+                case State.Input:
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        grid.GetGridPosition(GetMousePosition(), out startX, out startY);
+                        dragging = true;
+                    }
 
-            if (dragging)
-            {
-                grid.GetGridPosition(GetMousePosition(), out int x, out int y);
+                    if (dragging)
+                    {
+                        grid.GetGridPosition(GetMousePosition(), out int x, out int y);
 
-                if (SwapGems(startX, startY, x, y) || Input.GetMouseButtonUp(0))
-                {
-                    dragging = false;
-                }
+                        if (SwapGems(startX, startY, x, y) || Input.GetMouseButtonUp(0))
+                        {
+                            dragging = false;
+                        }
+                    }
+                    break;
+                case State.Matching:
+                    // TODO trouver les matchs
+                    // TODO détruire les matchs
+                    // TODO faire tomber les gems dans les espaces libres
+                    // TODO créer les nouvelles gems dans les espaces libres en haut
+                    // TODO vérifier l'état du jeu pour voir s'il y a des possibilités de déplacement (pour randomiser)
+                    // TODO repasser en état Input
+                    break;
+                case State.Pause:
+                    break;
+                default:
+                    state = State.Pause;
+                    break;
             }
         }
 
@@ -82,6 +112,8 @@ namespace Sacrimatch3
                 gemController.Update();
             });
         }
+
+        
 
         private Vector3 GetMousePosition()
         {
