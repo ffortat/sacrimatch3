@@ -133,7 +133,6 @@ GameObject:
   m_Component:
   - component: {fileID: 303363346}
   - component: {fileID: 303363347}
-  - component: {fileID: 303363345}
   m_Layer: 0
   m_Name: Match3
   m_TagString: Untagged
@@ -141,19 +140,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &303363345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 303363344}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 903924c93f5954149b906f5dbccebb76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gemPrefab: {fileID: -6040406433729786647, guid: 1ffacefdf523e8745adb17c591e4680b, type: 3}
 --- !u!4 &303363346
 Transform:
   m_ObjectHideFlags: 0
@@ -181,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc7f31a9a98597a4ab7fd3f9fc86c9fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  match3Visual: {fileID: 303363345}
+  gemPrefab: {fileID: 1877588959709402072, guid: 1ffacefdf523e8745adb17c591e4680b, type: 3}
   gems:
   - {fileID: 11400000, guid: 829ee203ddb3d0d4f8e5337dd2422bee, type: 2}
   - {fileID: 11400000, guid: 41977a31443e92b498355fd54b099bbc, type: 2}
