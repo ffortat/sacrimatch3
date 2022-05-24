@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,7 +23,9 @@ namespace Sacrimatch3
         private int startX = 0;
         private int startY = 0;
 
-        private State state = State.Busy;
+        private float busyTimer = 0f;
+        private State state = State.Pause;
+        private Action busyCallback;
 
         private GridGenerator generator = null;
         private Grid<GemController> grid = null;
@@ -40,6 +43,11 @@ namespace Sacrimatch3
             switch (state)
             {
                 case State.Busy:
+                    busyTimer -= Time.deltaTime;
+                    if (busyTimer <= 0f)
+                    {
+                        busyCallback();
+                    }
                     break;
                 case State.Input:
                     if (Input.GetMouseButtonDown(0))
@@ -59,6 +67,14 @@ namespace Sacrimatch3
                     }
                     break;
                 case State.Matching:
+                    if (FindMatchAndDestroy())
+                    {
+                        Delay(0.5f, () => { SetState(State.Matching); });
+                    }
+                    else
+                    {
+                        SetState(State.Input);
+                    }
                     // TODO trouver les matchs
                     // TODO détruire les matchs
                     // TODO faire tomber les gems dans les espaces libres
@@ -69,7 +85,7 @@ namespace Sacrimatch3
                 case State.Pause:
                     break;
                 default:
-                    state = State.Pause;
+                    SetState(State.Pause);
                     break;
             }
         }
@@ -81,7 +97,7 @@ namespace Sacrimatch3
             grid.ForEach((int x, int y, GemController gemController) =>
             {
                 Gem gem = Instantiate(gemPrefab, grid.GetWorldPosition(x, y), Quaternion.identity);
-                gem.Sprite = gems[Random.Range(0, gems.Count)].sprite;
+                gem.Sprite = gems[UnityEngine.Random.Range(0, gems.Count)].sprite;
 
                 gemController.Gem = gem;
             });
@@ -113,7 +129,22 @@ namespace Sacrimatch3
             });
         }
 
-        
+        private void SetState(State state)
+        {
+            this.state = state;
+        }
+
+        private void Delay(float delay, Action callback)
+        {
+            SetState(State.Busy);
+            busyTimer = delay;
+            busyCallback = callback;
+        }
+
+        private bool FindMatchAndDestroy()
+        {
+            return false;
+        }
 
         private Vector3 GetMousePosition()
         {
