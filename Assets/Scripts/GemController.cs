@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Sacrimatch3
 {
     public class GemController
@@ -5,6 +7,7 @@ namespace Sacrimatch3
         private Grid<GemController> grid;
         private int x;
         private int y;
+        private Gem gem;
 
         public GemController(Grid<GemController> grid, int x, int y)
         {
@@ -13,6 +16,25 @@ namespace Sacrimatch3
             this.y = y;
         }
 
-        public SOGem Gem { get; set; }
+        public void Swap(GemController otherGem)
+        {
+            Gem tempGem = otherGem.gem;
+
+            otherGem.gem = gem;
+            gem = tempGem;
+        }
+
+        public void Update()
+        {
+            if (gem)
+            {
+                Vector3 targetPosition = grid.GetWorldPosition(x, y);
+                Vector3 moveDir = (targetPosition - gem.transform.position);
+                float moveSpeed = 10f;
+                gem.transform.position += moveDir * moveSpeed * Time.deltaTime;
+            }
+        }
+
+        public Gem Gem { get => gem; set => gem = value; }
     }
 }
