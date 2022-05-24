@@ -36,5 +36,7 @@ namespace Sacrimatch3
         }
 
         public Gem Gem { get => gem; set => gem = value; }
+        public int X { get => x; }
+        public int Y { get => y; }
     }
 }
