@@ -34,7 +34,7 @@ namespace Sacrimatch3
         {
             generator = new GridGenerator();
             Setup(generator.Grid);
-            SetState(State.Input);
+            SetState(State.Matching);
         }
 
         private void Update()
@@ -70,18 +70,19 @@ namespace Sacrimatch3
                 case State.Matching:
                     if (FindMatchAndDestroy())
                     {
-                        Delay(0.5f, () => { SetState(State.Matching); });
+                        Delay(0.3f, () =>
+                        {
+                            DropGems();
+                            SpawnGems();
+
+                            Delay(0.5f, () => { SetState(State.Matching); });
+                        });
                     }
                     else
                     {
+                        // TODO vérifier l'état du jeu pour voir s'il y a des possibilités de déplacement (pour randomiser)
                         SetState(State.Input);
                     }
-                    // TODO trouver les matchs
-                    // TODO détruire les matchs
-                    // TODO faire tomber les gems dans les espaces libres
-                    // TODO créer les nouvelles gems dans les espaces libres en haut
-                    // TODO vérifier l'état du jeu pour voir s'il y a des possibilités de déplacement (pour randomiser)
-                    // TODO repasser en état Input
                     break;
                 case State.Pause:
                     break;
@@ -97,11 +98,16 @@ namespace Sacrimatch3
 
             grid.ForEach((int x, int y, GemController gemController) =>
             {
-                Gem gem = Instantiate(gemPrefab, grid.GetWorldPosition(x, y), Quaternion.identity);
-                gem.Setup(gems[UnityEngine.Random.Range(0, gems.Count)]);
-
-                gemController.Gem = gem;
+                gemController.Gem = SpawnGem(x, y);
             });
+        }
+
+        private Gem SpawnGem(int x, int y)
+        {
+            Gem gem = Instantiate(gemPrefab, grid.GetWorldPosition(x, y), Quaternion.identity);
+            gem.Setup(gems[UnityEngine.Random.Range(0, gems.Count)]);
+
+            return gem;
         }
 
         private bool SwapGems(int x1, int y1, int x2, int y2)
@@ -116,7 +122,7 @@ namespace Sacrimatch3
 
                 gem1.Swap(gem2);
 
-                SetState(State.Matching);
+                Delay(0.5f, () => SetState(State.Matching));
 
                 return true;
             }
@@ -182,7 +188,36 @@ namespace Sacrimatch3
                 }
             }
 
-            return false;
+            return linksList.Count > 0;
+        }
+
+        private void DropGems()
+        {
+            grid.ForEach((int x, int y, GemController gem) =>
+            {
+                if (gem.IsEmpty)
+                {
+                    gem.DropTopGem();
+                }
+            });
+        }
+
+        private void SpawnGems()
+        {
+            int[] emptyCount = new int[grid.Width];
+
+            for (int x = 0; x < grid.Width; x += 1)
+            {
+                emptyCount[x] = CountEmptyInColumn(x);
+            }
+
+            grid.ForEach((int x, int y, GemController gemController) =>
+            {
+                if (gemController.IsEmpty)
+                {
+                    gemController.Gem = SpawnGem(x, y + emptyCount[x]);
+                }
+            });
         }
 
         private List<List<GemController>> GetMatch3Links(GemController gem)
@@ -266,6 +301,21 @@ namespace Sacrimatch3
             }
 
             return linksList;
+        }
+
+        private int CountEmptyInColumn(int x)
+        {
+            int count = 0;
+
+            for (int y = 0; y < grid.Height; y += 1)
+            {
+                if (grid.GetValue(x, y).IsEmpty)
+                {
+                    count += 1;
+                }
+            }
+
+            return count;
         }
 
         private Vector3 GetMousePosition()
