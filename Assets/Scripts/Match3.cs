@@ -34,6 +34,7 @@ namespace Sacrimatch3
         {
             generator = new GridGenerator();
             Setup(generator.Grid);
+            SetState(State.Input);
         }
 
         private void Update()
@@ -115,6 +116,8 @@ namespace Sacrimatch3
 
                 gem1.Swap(gem2);
 
+                SetState(State.Matching);
+
                 return true;
             }
 
@@ -144,17 +147,25 @@ namespace Sacrimatch3
         private bool FindMatchAndDestroy()
         {
             bool[,] seen = new bool[grid.Width, grid.Height];
+            List<List<GemController>> linksList = new List<List<GemController>>();
 
             grid.ForEach((int x, int y, GemController gemController) =>
             {
                 if (!seen[x, y])
                 {
-                    List<List<GemController>> linksList = GetMatch3Links(gemController);
+                    List<List<GemController>> gemLinks = GetMatch3Links(gemController);
 
-                    if (linksList.Count > 0)
+                    if (gemLinks.Count > 0)
                     {
-                        // TODO add links list to global list
-                        // TODO set all links elements as seen
+                        linksList.AddRange(gemLinks);
+
+                        foreach (List<GemController> link in gemLinks)
+                        {
+                            foreach (GemController gem in link)
+                            {
+                                seen[gem.X, gem.Y] = true;
+                            }
+                        }
                     }
                     else
                     {
@@ -162,8 +173,14 @@ namespace Sacrimatch3
                     }
                 }
             });
-            // Pour chaque position chercher les liens si pas déjà visité
-            // Noter les positions visitées dans les liens enregistrés
+
+            foreach (List<GemController> link in linksList)
+            {
+                foreach (GemController gem in link)
+                {
+                    gem.Destroy();
+                }
+            }
 
             return false;
         }
@@ -171,15 +188,16 @@ namespace Sacrimatch3
         private List<List<GemController>> GetMatch3Links(GemController gem)
         {
             List<List<GemController>> linksList = new List<List<GemController>>();
+            List<GemController> link;
 
             int leftLinks = 0;
             int rightLinks = 0;
             int upLinks = 0;
             int downLinks = 0;
 
-            for (int i = gem.X - 1; i >= 0; i -= 1)
+            for (int x = gem.X - 1; x >= 0; x -= 1)
             {
-                if (grid.GetValue(i, gem.Y).Gem.Type == gem.Gem.Type)
+                if (grid.GetValue(x, gem.Y).Gem.Type == gem.Gem.Type)
                 {
                     leftLinks += 1;
                 }
@@ -189,9 +207,9 @@ namespace Sacrimatch3
                 }
             }
 
-            for (int i = gem.X + 1; i < grid.Width; i += 1)
+            for (int x = gem.X + 1; x < grid.Width; x += 1)
             {
-                if (grid.GetValue(i, gem.Y).Gem.Type == gem.Gem.Type)
+                if (grid.GetValue(x, gem.Y).Gem.Type == gem.Gem.Type)
                 {
                     rightLinks += 1;
                 }
@@ -201,23 +219,20 @@ namespace Sacrimatch3
                 }
             }
 
-            // TODO Add gems on horizontal line as a link
-
-            for (int i = gem.Y - 1; i >= 0; i -= 1)
+            if (leftLinks + 1 + rightLinks >= 3)
             {
-                if (grid.GetValue(gem.X, i).Gem.Type == gem.Gem.Type)
+                link = new List<GemController>();
+                for (int x = gem.X - leftLinks; x <= gem.X + rightLinks; x += 1)
                 {
-                    upLinks += 1;
+                    link.Add(grid.GetValue(x, gem.Y));
                 }
-                else
-                {
-                    break;
-                }
+
+                linksList.Add(link);
             }
 
-            for (int i = gem.Y + 1; i < grid.Height; i += 1)
+            for (int y = gem.Y - 1; y >= 0; y -= 1)
             {
-                if (grid.GetValue(gem.X, i).Gem.Type == gem.Gem.Type)
+                if (grid.GetValue(gem.X, y).Gem.Type == gem.Gem.Type)
                 {
                     downLinks += 1;
                 }
@@ -227,7 +242,28 @@ namespace Sacrimatch3
                 }
             }
 
-            // TODO Add gems on vertical line as a link
+            for (int y = gem.Y + 1; y < grid.Height; y += 1)
+            {
+                if (grid.GetValue(gem.X, y).Gem.Type == gem.Gem.Type)
+                {
+                    upLinks += 1;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if (downLinks + 1 + upLinks >= 3)
+            {
+                link = new List<GemController>();
+                for (int y = gem.Y - downLinks; y <= gem.Y + upLinks; y += 1)
+                {
+                    link.Add(grid.GetValue(gem.X, y));
+                }
+
+                linksList.Add(link);
+            }
 
             return linksList;
         }
