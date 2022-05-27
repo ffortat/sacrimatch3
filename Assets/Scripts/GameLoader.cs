@@ -1,14 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Sacrimatch3
 {
     public class GameLoader : MonoBehaviour
     {
-        /* TODO
-         * Singleton
-         * Charger une partie
-         */
+        private void Awake()
+        {
+            if (FindObjectsOfType<GameLoader>().Length > 1)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                DontDestroyOnLoad(gameObject);
+            }
+        }
+
+        public void StartGame()
+        {
+            SceneManager.LoadScene("GameLevel");
+        }
+
+        public void EndGame()
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
+
+        public void ExitGame()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+        }
     }
 }
