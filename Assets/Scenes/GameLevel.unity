@@ -153,7 +153,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &303363347
 MonoBehaviour:
@@ -431,6 +431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doorPrefab: {fileID: 177659731779835363, guid: d78b5930177e02e42b81147b8c743e56, type: 3}
+  doorCount: 3
   doors:
   - {fileID: 11400000, guid: 6fcea9a0093dfde479d099c0e41cc183, type: 2}
   - {fileID: 11400000, guid: db96756ea2c02e949a26077d18ac6082, type: 2}
@@ -442,13 +443,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 694959998}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1032753794
 GameObject:
@@ -528,6 +529,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 1032753795}
+  doorController: {fileID: 694959999}
   match3: {fileID: 303363347}
 --- !u!4 &2035955420
 Transform:

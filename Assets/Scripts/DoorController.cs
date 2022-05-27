@@ -14,7 +14,7 @@ namespace Sacrimatch3
 
         private List<Door> doorList = new List<Door>();
 
-        private void Start()
+        private void Awake()
         {
             for (int i = 0; i < doorCount; i += 1)
             {
@@ -22,6 +22,10 @@ namespace Sacrimatch3
                 door.Setup(doors[Random.Range(0, doors.Count)]);
                 doorList.Add(door);
             }
+        }
+
+        private void Start()
+        {
         }
     }
 }

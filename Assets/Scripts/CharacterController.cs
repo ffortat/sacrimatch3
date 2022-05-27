@@ -14,7 +14,7 @@ namespace Sacrimatch3
 
         private List<Character> party = new List<Character>();
 
-        private void Start()
+        private void Awake()
         {
             for (int i = 0; i < partySize; i += 1)
             {
@@ -22,6 +22,10 @@ namespace Sacrimatch3
                 character.Setup(characters[Random.Range(0, characters.Count)]);
                 party.Add(character);
             }
+        }
+
+        private void Start()
+        {
         }
     }
 }
