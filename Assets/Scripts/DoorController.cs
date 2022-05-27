@@ -8,6 +8,20 @@ namespace Sacrimatch3
         [SerializeField]
         private Door doorPrefab = null;
         [SerializeField]
+        private int doorCount = 3;
+        [SerializeField]
         private List<SODoor> doors = new List<SODoor>();
+
+        private List<Door> doorList = new List<Door>();
+
+        private void Start()
+        {
+            for (int i = 0; i < doorCount; i += 1)
+            {
+                Door door = Instantiate(doorPrefab, transform);
+                door.Setup(doors[Random.Range(0, doors.Count)]);
+                doorList.Add(door);
+            }
+        }
     }
 }

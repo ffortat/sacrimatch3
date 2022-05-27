@@ -9,7 +9,7 @@ namespace Sacrimatch3
 
         private SODoor doorData = null;
         
-        private void Setup(SODoor doorData)
+        public void Setup(SODoor doorData)
         {
             this.doorData = doorData;
             renderer.sprite = doorData.sprite;
