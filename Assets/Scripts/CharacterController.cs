@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Sacrimatch3
 {
@@ -13,6 +14,7 @@ namespace Sacrimatch3
         private List<SOCharacter> characters = new List<SOCharacter>();
 
         private List<Character> party = new List<Character>();
+        private UnityEvent onSacrifice = new UnityEvent();
 
         private void Awake()
         {
@@ -26,6 +28,17 @@ namespace Sacrimatch3
 
         private void Start()
         {
+        }
+
+        public void AddOnSacrificeListener(UnityAction listener)
+        {
+            onSacrifice.AddListener(listener);
+        }
+
+        public void Sacrifice(Character character)
+        {
+            character.Sacrifice();
+            onSacrifice?.Invoke();
         }
     }
 }

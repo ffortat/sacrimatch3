@@ -16,6 +16,9 @@ namespace Sacrimatch3
          * Déclenchement de séquence de victoire
          */
         [SerializeField]
+        private CameraController cameraController = null;
+
+        [SerializeField]
         private CharacterController characterController = null;
         [SerializeField]
         private DoorController doorController = null;
@@ -24,12 +27,33 @@ namespace Sacrimatch3
 
         private void Awake()
         {
-            
+            characterController.AddOnSacrificeListener(OnSacrifice);
         }
 
         private void Start()
         {
+            PresentParty();
+        }
 
+        private void PresentParty()
+        {
+            Zoom();
+            // trigger event for UI
+        }
+
+        private void OnSacrifice()
+        {
+            Unzoom();
+        }
+
+        private void Zoom()
+        {
+            cameraController.Zoom();
+        }
+
+        private void Unzoom()
+        {
+            cameraController.Unzoom();
         }
     }
 }

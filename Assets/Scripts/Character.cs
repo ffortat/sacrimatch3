@@ -23,6 +23,11 @@ namespace Sacrimatch3
             renderer.sprite = characterData.sprite;
         }
 
+        public void Sacrifice()
+        {
+            // TODO animer sacrifice
+        }
+
         public SOCharacter Data { get => characterData; }
     }
 }
