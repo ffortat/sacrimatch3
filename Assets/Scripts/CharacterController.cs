@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,6 +7,13 @@ namespace Sacrimatch3
 {
     public class CharacterController : MonoBehaviour
     {
+        public enum State
+        {
+            Stay,
+            Move,
+            Select,
+        }
+
         [SerializeField]
         private Character characterPrefab = null;
         [SerializeField]
@@ -15,6 +23,10 @@ namespace Sacrimatch3
 
         [SerializeField]
         private float moveSpeed = 5f;
+
+        private float moveTimer = 0f;
+        private State state = State.Stay;
+        private Action moveCallback;
 
         private GameObject characterHolder = null;
         private List<Character> party = new List<Character>();
@@ -31,23 +43,45 @@ namespace Sacrimatch3
             for (int i = 0; i < partySize; i += 1)
             {
                 Character character = Instantiate(characterPrefab, characterHolder.transform.position, Quaternion.identity, characterHolder.transform);
-                character.Setup(characters[Random.Range(0, characters.Count)]);
+                character.Setup(characters[UnityEngine.Random.Range(0, characters.Count)]);
                 character.Position = new Vector3(i, 0);
                 party.Add(character);
             }
-        }
 
-        private void Start()
-        {
+            Delay(0.5f, () => state = State.Select);
         }
 
         private void Update()
         {
-            party.ForEach((Character character) =>
+            MoveCharacters();
+
+            switch (state)
             {
-                Vector3 moveDir = (character.TargetPosition - character.Position);
-                character.transform.position += moveDir * moveSpeed * Time.deltaTime;
-            });
+                case State.Move:
+                    moveTimer -= Time.deltaTime;
+                    if (moveTimer <= 0f)
+                    {
+                        moveCallback();
+                    }
+                    break;
+                case State.Select:
+                    if (Input.GetMouseButton(0))
+                    {
+                        party.ForEach((character) =>
+                        {
+                            if (character.ContainsPosition(Input.mousePosition))
+                            {
+                                SelectCharacter(character);
+                            }
+                        });
+                    }
+                    break;
+                case State.Stay:
+                    break;
+                default:
+                    state = State.Stay;
+                    break;
+            }
         }
 
         public void Setup(DoorController doorController)
@@ -64,6 +98,32 @@ namespace Sacrimatch3
         {
             character.Sacrifice();
             onSacrifice?.Invoke();
+        }
+
+        private void SetState(State state)
+        {
+            this.state = state;
+        }
+
+        private void Delay(float delay, Action callback)
+        {
+            SetState(State.Move);
+            moveTimer = delay;
+            moveCallback = callback;
+        }
+
+        private void SelectCharacter(Character character)
+        {
+            Sacrifice(character);
+        }
+
+        private void MoveCharacters()
+        {
+            party.ForEach((Character character) =>
+            {
+                Vector3 moveDir = (character.TargetPosition - character.Position);
+                character.transform.position += moveDir * moveSpeed * Time.deltaTime;
+            });
         }
     }
 }

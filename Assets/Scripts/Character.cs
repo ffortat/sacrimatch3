@@ -13,6 +13,12 @@ namespace Sacrimatch3
         private Vector3 targetPosition = Vector3.zero;
 
         private SOCharacter characterData = null;
+        private new Collider2D collider = null;
+
+        private void Awake()
+        {
+            collider = GetComponent<Collider2D>();
+        }
 
         public void Setup(SOCharacter characterData)
         {
@@ -21,6 +27,11 @@ namespace Sacrimatch3
             renderer.sprite = characterData.sprite;
 
             targetPosition = transform.localPosition;
+        }
+
+        public bool ContainsPosition(Vector3 position)
+        {
+            return collider.bounds.Contains(position);
         }
 
         public void Sacrifice()
