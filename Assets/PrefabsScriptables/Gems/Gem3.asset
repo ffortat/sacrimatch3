@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e74a23a152fad324aa77cb35bb62c700, type: 3}
   m_Name: Gem3
   m_EditorClassIdentifier: 
-  gemName: Gem 3
-  sprite: {fileID: 21300000, guid: 374f2602d7bc9774a94d868ce1d70580, type: 3}
+  gemName: Heart
+  sprite: {fileID: 21300000, guid: 10783cdc9e0bb5f4cbde1c7c80d59b7f, type: 3}
