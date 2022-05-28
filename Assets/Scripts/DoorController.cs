@@ -16,9 +16,11 @@ namespace Sacrimatch3
 
         private void Awake()
         {
+            float doorSpacing = (CameraController.TopRight.x - CameraController.TopLeft.x) / 4;
+
             for (int i = 0; i < doorCount; i += 1)
             {
-                Door door = Instantiate(doorPrefab, transform);
+                Door door = Instantiate(doorPrefab, CameraController.TopLeft + new Vector3(doorSpacing * (i + 1), -2), Quaternion.identity, transform);
                 door.Setup(doors[Random.Range(0, doors.Count)]);
                 doorList.Add(door);
             }
