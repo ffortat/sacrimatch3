@@ -99,12 +99,14 @@ namespace Sacrimatch3
 
         public void Activate()
         {
-            SetState(State.Input);
+            SetState(State.Matching);
             gridContainer.SetActive(true);
         }
 
         public void Reset()
         {
+            SetState(State.Pause);
+
             if (gridContainer)
             {
                 Destroy(gridContainer);
@@ -115,15 +117,16 @@ namespace Sacrimatch3
 
         private void Initialize()
         {
+            SetState(State.Pause);
+
             gridContainer = new GameObject();
             gridContainer.name = "GridContainer";
             gridContainer.transform.parent = transform;
 
             generator = new GridGenerator();
             Setup(generator.Grid);
-            SetState(State.Matching);
 
-            gridContainer.SetActive(false);
+            //gridContainer.SetActive(false);
         }
 
         private void Setup(Grid<GemController> grid)
