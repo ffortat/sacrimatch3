@@ -20,6 +20,8 @@ namespace Sacrimatch3
         private List<Character> party = new List<Character>();
         private UnityEvent onSacrifice = new UnityEvent();
 
+        private DoorController doorController = null;
+
         private void Awake()
         {
             characterHolder = new GameObject();
@@ -46,6 +48,11 @@ namespace Sacrimatch3
                 Vector3 moveDir = (character.TargetPosition - character.Position);
                 character.transform.position += moveDir * moveSpeed * Time.deltaTime;
             });
+        }
+
+        public void Setup(DoorController doorController)
+        {
+            this.doorController = doorController;
         }
 
         public void AddOnSacrificeListener(UnityAction listener)

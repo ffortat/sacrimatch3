@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Sacrimatch3
 {
@@ -25,9 +26,12 @@ namespace Sacrimatch3
         [SerializeField]
         private Match3 match3 = null;
 
+        private UnityEvent onPresentParty = new UnityEvent();
+
         private void Awake()
         {
             characterController.AddOnSacrificeListener(OnSacrifice);
+            characterController.Setup(doorController);
         }
 
         private void Start()
@@ -35,10 +39,15 @@ namespace Sacrimatch3
             PresentParty();
         }
 
+        public void AddOnPresentPartyListener(UnityAction listener)
+        {
+            onPresentParty.AddListener(listener);
+        }
+
         private void PresentParty()
         {
-            Zoom();
-            // trigger event for UI
+            ZoomToParty();
+            onPresentParty?.Invoke();
         }
 
         private void OnSacrifice()
@@ -46,8 +55,9 @@ namespace Sacrimatch3
             Unzoom();
         }
 
-        private void Zoom()
+        private void ZoomToParty()
         {
+            // TODO add parameters to zoom to correct area
             cameraController.Zoom();
         }
 
