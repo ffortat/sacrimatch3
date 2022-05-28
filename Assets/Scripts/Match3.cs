@@ -27,14 +27,13 @@ namespace Sacrimatch3
         private State state = State.Pause;
         private Action busyCallback;
 
+        private GameObject gridContainer = null;
         private GridGenerator generator = null;
         private Grid<GemController> grid = null;
 
         private void Awake()
         {
-            generator = new GridGenerator();
-            Setup(generator.Grid);
-            SetState(State.Matching);
+            Initialize();
         }
 
         private void Update()
@@ -51,6 +50,12 @@ namespace Sacrimatch3
                     }
                     break;
                 case State.Input:
+                    if (!gameObject.activeInHierarchy)
+                    {
+                        SetState(State.Pause);
+                        break;
+                    }
+
                     if (Input.GetMouseButtonDown(0))
                     {
                         grid.GetGridPosition(GetMousePosition(), out startX, out startY);
@@ -92,6 +97,35 @@ namespace Sacrimatch3
             }
         }
 
+        public void Activate()
+        {
+            SetState(State.Input);
+            gridContainer.SetActive(true);
+        }
+
+        public void Reset()
+        {
+            if (gridContainer)
+            {
+                Destroy(gridContainer);
+            }
+
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            gridContainer = new GameObject();
+            gridContainer.name = "GridContainer";
+            gridContainer.transform.parent = transform;
+
+            generator = new GridGenerator();
+            Setup(generator.Grid);
+            SetState(State.Matching);
+
+            gridContainer.SetActive(false);
+        }
+
         private void Setup(Grid<GemController> grid)
         {
             this.grid = grid;
@@ -104,7 +138,7 @@ namespace Sacrimatch3
 
         private Gem SpawnGem(int x, int y)
         {
-            Gem gem = Instantiate(gemPrefab, grid.GetWorldPosition(x, y), Quaternion.identity, transform);
+            Gem gem = Instantiate(gemPrefab, grid.GetWorldPosition(x, y), Quaternion.identity, gridContainer.transform);
             gem.Setup(gems[UnityEngine.Random.Range(0, gems.Count)]);
 
             return gem;

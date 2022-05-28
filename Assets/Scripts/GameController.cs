@@ -53,6 +53,7 @@ namespace Sacrimatch3
         private void OnSacrifice()
         {
             Unzoom();
+            match3.Activate();
         }
 
         private void ZoomToParty()

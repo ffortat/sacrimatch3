@@ -67,9 +67,12 @@ namespace Sacrimatch3
                 case State.Select:
                     if (Input.GetMouseButton(0))
                     {
+                        Vector3 selectPoint = Input.mousePosition;
+                        selectPoint.z = -Camera.main.transform.position.z;
+
                         party.ForEach((character) =>
                         {
-                            if (character.ContainsPosition(Input.mousePosition))
+                            if (character.ContainsPosition(Camera.main.ScreenToWorldPoint(selectPoint)))
                             {
                                 SelectCharacter(character);
                             }
