@@ -7,8 +7,6 @@ namespace Sacrimatch3
     {
         /* TODO
          * Présenter le groupe de personnages face à une porte
-         * Séquence de sacrifice
-         * Initialisation du match 3
          * Mise en scène
          * *phase de jeu*
          * Déclenchement du passage de porte
@@ -53,7 +51,7 @@ namespace Sacrimatch3
         private void OnSacrifice()
         {
             Unzoom();
-            match3.Activate();
+            StartMatch3();
         }
 
         private void ZoomToParty()
@@ -65,6 +63,11 @@ namespace Sacrimatch3
         private void Unzoom()
         {
             cameraController.Unzoom();
+        }
+
+        private void StartMatch3()
+        {
+            match3.Activate(doorController.CurrentDoor.Tiles);
         }
     }
 }

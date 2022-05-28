@@ -12,6 +12,7 @@ namespace Sacrimatch3
         [SerializeField]
         private List<SODoor> doors = new List<SODoor>();
 
+        private Door currentDoor = null;
         private List<Door> doorList = new List<Door>();
 
         private void Awake()
@@ -24,10 +25,10 @@ namespace Sacrimatch3
                 door.Setup(doors[Random.Range(0, doors.Count)]);
                 doorList.Add(door);
             }
+
+            currentDoor = doorList[0];
         }
 
-        private void Start()
-        {
-        }
+        public Door CurrentDoor { get => currentDoor; }
     }
 }
