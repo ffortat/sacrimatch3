@@ -18,6 +18,8 @@ namespace Sacrimatch3
         private Gem gemPrefab = null;
         [SerializeField]
         private List<SOGem> gems = new List<SOGem>();
+        [SerializeField]
+        private PuzzlePiece puzzlePiecePrefab = null;
 
         private bool dragging = false;
         private int startX = 0;
@@ -147,12 +149,19 @@ namespace Sacrimatch3
 
         private void InitializePuzzle()
         {
-            // Spawn sprites
-            puzzle.ForEach((Sprite sprite) =>
-            {
+            int x;
+            int y;
 
-            });
-            // Randomize positions => attach to gem controllers
+            for (int i = 0; i < puzzle.Count; i += 1)
+            {
+                do
+                {
+                    x = UnityEngine.Random.Range(0, grid.Width);
+                    y = UnityEngine.Random.Range(0, grid.Height);
+                } while (grid.GetValue(x, y).PuzzlePiece != null);
+
+                SpawnPuzzlePiece(x, y, i);
+            }
             // TODO in gem controllers : implement puzzle clear
 
             puzzleInit = true;
@@ -174,6 +183,14 @@ namespace Sacrimatch3
             gem.Setup(gems[UnityEngine.Random.Range(0, gems.Count)]);
 
             return gem;
+        }
+
+        private PuzzlePiece SpawnPuzzlePiece(int x, int y, int index)
+        {
+            PuzzlePiece puzzlePiece = Instantiate(puzzlePiecePrefab, grid.GetWorldPosition(x, y), Quaternion.identity, gridContainer.transform);
+            puzzlePiece.Setup(index, puzzle[index]);
+
+            return puzzlePiece;
         }
 
         private bool SwapGems(int x1, int y1, int x2, int y2)

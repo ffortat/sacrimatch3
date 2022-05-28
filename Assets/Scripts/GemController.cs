@@ -8,6 +8,7 @@ namespace Sacrimatch3
         private int x;
         private int y;
         private Gem gem = null;
+        private PuzzlePiece puzzlePiece = null;
 
         public GemController(Grid<GemController> grid, int x, int y)
         {
@@ -69,6 +70,7 @@ namespace Sacrimatch3
         }
 
         public Gem Gem { get => gem; set => gem = value; }
+        public PuzzlePiece PuzzlePiece { get => puzzlePiece; set => puzzlePiece = value; }
         public int X { get => x; }
         public int Y { get => y; }
         public bool IsEmpty { get => gem == null; }
