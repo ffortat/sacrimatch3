@@ -99,8 +99,8 @@ namespace Sacrimatch3
 
         public void Activate()
         {
-            SetState(State.Matching);
             gridContainer.SetActive(true);
+            Delay(0.1f, () => SetState(State.Matching));
         }
 
         public void Reset()
@@ -126,7 +126,7 @@ namespace Sacrimatch3
             generator = new GridGenerator();
             Setup(generator.Grid);
 
-            //gridContainer.SetActive(false);
+            gridContainer.SetActive(false);
         }
 
         private void Setup(Grid<GemController> grid)

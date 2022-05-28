@@ -31,6 +31,7 @@ namespace Sacrimatch3
         private GameObject characterHolder = null;
         private List<Character> party = new List<Character>();
         private UnityEvent onSacrifice = new UnityEvent();
+        private Character characterSelected = null;
 
         private DoorController doorController = null;
 
@@ -72,9 +73,10 @@ namespace Sacrimatch3
 
                         party.ForEach((character) =>
                         {
-                            if (character.ContainsPosition(Camera.main.ScreenToWorldPoint(selectPoint)))
+                            if (characterSelected == null && character.ContainsPosition(Camera.main.ScreenToWorldPoint(selectPoint)))
                             {
                                 SelectCharacter(character);
+                                SetState(State.Stay);
                             }
                         });
                     }
@@ -117,6 +119,7 @@ namespace Sacrimatch3
 
         private void SelectCharacter(Character character)
         {
+            characterSelected = character;
             Sacrifice(character);
         }
 
