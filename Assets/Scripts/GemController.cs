@@ -19,13 +19,22 @@ namespace Sacrimatch3
 
         public void Update()
         {
+            float moveSpeed = 10f;
+
             if (gem)
             {
                 Vector3 targetPosition = grid.GetWorldPosition(x, y);
                 Vector3 moveDir = (targetPosition - gem.transform.position);
-                float moveSpeed = 10f;
                 gem.transform.position += moveDir * moveSpeed * Time.deltaTime;
                 gem.Show = IsGemVisible();
+            }
+
+            if (puzzlePiece)
+            {
+                Vector3 targetPosition = grid.GetWorldPosition(x, y);
+                targetPosition.z = 1;
+                Vector3 moveDir = (targetPosition - puzzlePiece.transform.position);
+                puzzlePiece.transform.position += moveDir * moveSpeed / 4 * Time.deltaTime;
             }
         }
 

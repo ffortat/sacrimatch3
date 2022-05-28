@@ -160,7 +160,7 @@ namespace Sacrimatch3
                     y = UnityEngine.Random.Range(0, grid.Height);
                 } while (grid.GetValue(x, y).PuzzlePiece != null);
 
-                SpawnPuzzlePiece(x, y, i);
+                grid.GetValue(x, y).PuzzlePiece = SpawnPuzzlePiece(x, y, i);
             }
             // TODO in gem controllers : implement puzzle clear
 
@@ -187,7 +187,9 @@ namespace Sacrimatch3
 
         private PuzzlePiece SpawnPuzzlePiece(int x, int y, int index)
         {
-            PuzzlePiece puzzlePiece = Instantiate(puzzlePiecePrefab, grid.GetWorldPosition(x, y), Quaternion.identity, gridContainer.transform);
+            Vector3 initialPosition = grid.GetWorldPosition(x, y);
+            initialPosition.z = -15;
+            PuzzlePiece puzzlePiece = Instantiate(puzzlePiecePrefab, initialPosition, Quaternion.identity, gridContainer.transform);
             puzzlePiece.Setup(index, puzzle[index]);
 
             return puzzlePiece;
