@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Sacrimatch3
@@ -14,5 +15,7 @@ namespace Sacrimatch3
             this.doorData = doorData;
             renderer.sprite = doorData.sprite;
         }
+
+        public List<Sprite> Tiles { get => doorData.tiles; }
     }
 }

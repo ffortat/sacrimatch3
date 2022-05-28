@@ -31,6 +31,9 @@ namespace Sacrimatch3
         private GridGenerator generator = null;
         private Grid<GemController> grid = null;
 
+        private bool puzzleInit = false;
+        private List<Sprite> puzzle = null;
+
         private void Awake()
         {
             Initialize();
@@ -54,6 +57,11 @@ namespace Sacrimatch3
                     {
                         SetState(State.Pause);
                         break;
+                    }
+
+                    if (!puzzleInit && puzzle != null)
+                    {
+                        InitializePuzzle();
                     }
 
                     if (Input.GetMouseButtonDown(0))
@@ -97,15 +105,23 @@ namespace Sacrimatch3
             }
         }
 
-        public void Activate()
+        public void Activate(List<Sprite> puzzle = null)
         {
             gridContainer.SetActive(true);
             Delay(0.1f, () => SetState(State.Matching));
+
+            if (puzzle != null && puzzle.Count > 0)
+            {
+                this.puzzle = puzzle;
+            }
         }
 
         public void Reset()
         {
             SetState(State.Pause);
+
+            puzzleInit = false;
+            puzzle = null;
 
             if (gridContainer)
             {
@@ -127,6 +143,19 @@ namespace Sacrimatch3
             Setup(generator.Grid);
 
             gridContainer.SetActive(false);
+        }
+
+        private void InitializePuzzle()
+        {
+            // Spawn sprites
+            puzzle.ForEach((Sprite sprite) =>
+            {
+
+            });
+            // Randomize positions => attach to gem controllers
+            // TODO in gem controllers : implement puzzle clear
+
+            puzzleInit = true;
         }
 
         private void Setup(Grid<GemController> grid)

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Sacrimatch3
@@ -6,6 +7,6 @@ namespace Sacrimatch3
     public class SODoor : ScriptableObject
     {
         public Sprite sprite = null;
-        public Texture2D tiledDoor = null;
+        public List<Sprite> tiles = null;
     }
 }
