@@ -6,5 +6,6 @@ namespace Sacrimatch3
     public class SODoor : ScriptableObject
     {
         public Sprite sprite = null;
+        public Texture2D tiledDoor = null;
     }
 }
