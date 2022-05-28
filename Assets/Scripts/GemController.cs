@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Sacrimatch3
 {
@@ -9,6 +10,8 @@ namespace Sacrimatch3
         private int y;
         private Gem gem = null;
         private PuzzlePiece puzzlePiece = null;
+
+        private UnityEvent<PuzzlePiece> onPuzzlePieceClear = new UnityEvent<PuzzlePiece>();
 
         public GemController(Grid<GemController> grid, int x, int y)
         {
@@ -64,7 +67,19 @@ namespace Sacrimatch3
             {
                 gem.Destroy();
                 gem = null;
+
+                if (puzzlePiece)
+                {
+                    onPuzzlePieceClear?.Invoke(PuzzlePiece);
+                    puzzlePiece.Clear();
+                    puzzlePiece = null;
+                }
             }
+        }
+
+        public void AddOnPuzzlePieceClearListener(UnityAction<PuzzlePiece> listener)
+        {
+            onPuzzlePieceClear.AddListener(listener);
         }
 
         private bool IsGemVisible()

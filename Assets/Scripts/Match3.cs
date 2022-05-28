@@ -162,7 +162,6 @@ namespace Sacrimatch3
 
                 grid.GetValue(x, y).PuzzlePiece = SpawnPuzzlePiece(x, y, i);
             }
-            // TODO in gem controllers : implement puzzle clear
 
             puzzleInit = true;
         }
@@ -174,6 +173,7 @@ namespace Sacrimatch3
             grid.ForEach((int x, int y, GemController gemController) =>
             {
                 gemController.Gem = SpawnGem(x, y);
+                gemController.AddOnPuzzlePieceClearListener(ClearPuzzlePiece);
             });
         }
 
@@ -213,6 +213,12 @@ namespace Sacrimatch3
             }
 
             return false;
+        }
+
+        private void ClearPuzzlePiece(PuzzlePiece puzzlePiece)
+        {
+            // TODO we just cleared that puzzle piece
+            // TODO move it to our cleared list => handled by door controller ?
         }
 
         private void UpdateVisuals()

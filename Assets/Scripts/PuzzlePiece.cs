@@ -15,6 +15,11 @@ namespace Sacrimatch3
             renderer.sprite = sprite;
         }
 
+        public void Clear()
+        {
+            // TODO animate a clear
+        }
+
         Sprite Sprite {
             get => renderer.sprite;
             set => renderer.sprite = value;
