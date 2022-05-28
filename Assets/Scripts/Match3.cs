@@ -104,7 +104,7 @@ namespace Sacrimatch3
 
         private Gem SpawnGem(int x, int y)
         {
-            Gem gem = Instantiate(gemPrefab, grid.GetWorldPosition(x, y), Quaternion.identity);
+            Gem gem = Instantiate(gemPrefab, grid.GetWorldPosition(x, y), Quaternion.identity, transform);
             gem.Setup(gems[UnityEngine.Random.Range(0, gems.Count)]);
 
             return gem;
