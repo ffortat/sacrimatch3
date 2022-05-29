@@ -33,6 +33,7 @@ namespace Sacrimatch3
             gameLoader = FindObjectOfType<GameLoader>();
 
             characterController.AddOnSacrificeListener(OnSacrifice);
+            characterController.AddOnMovesDepletedListener(PresentParty);
 
             match3.AddOnPuzzlePieceClearedListener(doorController.ClearDoorPiece);
             match3.AddOnGemsSwappedListener(characterController.UseMove);
@@ -53,7 +54,9 @@ namespace Sacrimatch3
 
         private void PresentParty()
         {
+            match3.Pause();
             ZoomToParty();
+            characterController.EnableSelection();
             onPresentParty?.Invoke();
         }
 
@@ -90,7 +93,14 @@ namespace Sacrimatch3
 
         private void StartMatch3()
         {
-            match3.Activate(doorController.CurrentDoor.Tiles);
+            if (match3.IsPaused)
+            {
+                match3.Resume();
+            }
+            else
+            {
+                match3.Activate(doorController.CurrentDoor.Tiles);
+            }
         }
     }
 }

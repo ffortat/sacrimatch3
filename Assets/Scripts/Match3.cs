@@ -22,6 +22,9 @@ namespace Sacrimatch3
         [SerializeField]
         private PuzzlePiece puzzlePiecePrefab = null;
 
+        private bool paused = false;
+        private bool requestPause = false;
+        private bool requestResume = false;
         private bool dragging = false;
         private int startX = 0;
         private int startY = 0;
@@ -84,6 +87,12 @@ namespace Sacrimatch3
                             dragging = false;
                         }
                     }
+
+                    if (requestPause)
+                    {
+                        requestPause = false;
+                        SetState(State.Pause);
+                    }
                     break;
                 case State.Matching:
                     if (FindMatchAndDestroy())
@@ -98,11 +107,24 @@ namespace Sacrimatch3
                     }
                     else
                     {
-                        // TODO vérifier l'état du jeu pour voir s'il y a des possibilités de déplacement (pour randomiser)
-                        SetState(State.Input);
+                        if (requestPause)
+                        {
+                            requestPause = false;
+                            SetState(State.Pause);
+                        }
+                        else
+                        {
+                            // TODO vérifier l'état du jeu pour voir s'il y a des possibilités de déplacement (pour randomiser)
+                            SetState(State.Input);
+                        }
                     }
                     break;
                 case State.Pause:
+                    if (requestResume)
+                    {
+                        requestResume = false;
+                        SetState(State.Matching);
+                    }
                     break;
                 default:
                     SetState(State.Pause);
@@ -134,6 +156,18 @@ namespace Sacrimatch3
             }
 
             Initialize();
+        }
+
+        public void Pause()
+        {
+            requestPause = true;
+            paused = true;
+        }
+
+        public void Resume()
+        {
+            requestResume = true;
+            paused = false;
         }
 
         public void AddOnPuzzlePieceClearedListener(UnityAction<PuzzlePiece> listener)
@@ -430,5 +464,7 @@ namespace Sacrimatch3
 
             return mousePosition;
         }
+
+        public bool IsPaused { get => paused; }
     }
 }

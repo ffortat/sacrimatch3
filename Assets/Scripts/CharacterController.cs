@@ -32,6 +32,7 @@ namespace Sacrimatch3
         private GameObject characterHolder = null;
         private List<Character> party = new List<Character>();
         private UnityEvent onSacrifice = new UnityEvent();
+        private UnityEvent onMovesDepleted = new UnityEvent();
         private Character characterSelected = null;
 
         private void Awake()
@@ -50,7 +51,7 @@ namespace Sacrimatch3
                 party.Add(character);
             }
 
-            Delay(0.5f, () => state = State.Select);
+            Delay(0.5f, () => SetState(State.Select));
         }
 
         private void Update()
@@ -102,6 +103,16 @@ namespace Sacrimatch3
             onSacrifice.AddListener(listener);
         }
 
+        public void AddOnMovesDepletedListener(UnityAction listener)
+        {
+            onMovesDepleted.AddListener(listener);
+        }
+
+        public void EnableSelection()
+        {
+            SetState(State.Select);
+        }
+
         public void Sacrifice(Character character)
         {
             party.Remove(character);
@@ -118,7 +129,8 @@ namespace Sacrimatch3
 
                 if (characterSelected.MovesLeft == 0)
                 {
-                    // TODO il faut sacrifier un autre personnage
+                    characterSelected = null;
+                    onMovesDepleted?.Invoke();
                 }
             }
             else
