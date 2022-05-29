@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Sacrimatch3
 {
@@ -16,6 +17,9 @@ namespace Sacrimatch3
         private Door currentDoor = null;
         private List<Door> doorList = new List<Door>();
         private Grid<PuzzlePieceController> grid = null;
+
+        private UnityEvent<Door> onDoorOpened = new UnityEvent<Door>();
+        private UnityEvent onAllDoorsOpened = new UnityEvent();
 
         private void Awake()
         {
@@ -34,6 +38,23 @@ namespace Sacrimatch3
         private void Update()
         {
             UpdateVisuals();
+
+#if UNITY_EDITOR
+            if (Input.GetKeyUp(KeyCode.N))
+            {
+                OpenDoor();
+            }
+#endif
+        }
+
+        public void AddOnDoorOpenedListener(UnityAction<Door> listener)
+        {
+            onDoorOpened.AddListener(listener);
+        }
+
+        public void AddOnAllDoorsOpenedListener(UnityAction listener)
+        {
+            onAllDoorsOpened.AddListener(listener);
         }
 
         public void ClearDoorPiece(PuzzlePiece doorPiece)
@@ -44,14 +65,20 @@ namespace Sacrimatch3
             grid.GetValue(x, y).PuzzlePiece = doorPiece;
         }
 
-        public void OpenDoor()
+        private void OpenDoor()
         {
             // TODO open door
-            // TODO trigger party move
-            GoToNextDoor();
+            if (GoToNextDoor())
+            {
+                onDoorOpened?.Invoke(currentDoor);
+            }
+            else
+            {
+                onAllDoorsOpened?.Invoke();
+            }
         }
 
-        private void GoToNextDoor()
+        private bool GoToNextDoor()
         {
             doorIndex += 1;
 
@@ -62,10 +89,12 @@ namespace Sacrimatch3
 
                 grid = new Grid<PuzzlePieceController>(currentDoor.TilesWidth, currentDoor.TilesHeight, 0.5f, new Vector3(10, -(currentDoor.TilesHeight / 4)), (Grid<PuzzlePieceController> grid, int x, int y) => new PuzzlePieceController(grid, x, y));
                 grid.ShowDebug = true;
+
+                return true;
             }
             else
             {
-                // TODO trigger end level
+                return false;
             }
         }
 
