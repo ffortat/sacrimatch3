@@ -20,9 +20,11 @@ namespace Sacrimatch3
             // TODO animate a clear
         }
 
-        Sprite Sprite {
+        public Sprite Sprite {
             get => renderer.sprite;
             set => renderer.sprite = value;
         }
+
+        public int Index { get => index; }
     }
 }

@@ -12,6 +12,7 @@ namespace Sacrimatch3
         [SerializeField]
         private List<SODoor> doors = new List<SODoor>();
 
+        private int doorIndex = -1;
         private Door currentDoor = null;
         private List<Door> doorList = new List<Door>();
 
@@ -26,7 +27,21 @@ namespace Sacrimatch3
                 doorList.Add(door);
             }
 
-            currentDoor = doorList[0];
+            OpenNextDoor();
+        }
+
+        private void OpenNextDoor()
+        {
+            doorIndex += 1;
+
+            if (doorIndex < doorList.Count)
+            {
+                currentDoor = doorList[doorIndex];
+            }
+            else
+            {
+                // TODO trigger end level
+            }
         }
 
         public Door CurrentDoor { get => currentDoor; }
