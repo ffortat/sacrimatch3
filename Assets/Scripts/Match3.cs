@@ -37,6 +37,7 @@ namespace Sacrimatch3
         private bool puzzleInit = false;
         private List<Sprite> puzzle = null;
         private UnityEvent<PuzzlePiece> onPuzzlePieceCleared = new UnityEvent<PuzzlePiece>();
+        private UnityEvent onGemsSwapped = new UnityEvent();
 
         private void Awake()
         {
@@ -135,9 +136,14 @@ namespace Sacrimatch3
             Initialize();
         }
 
-        public void AddOnPuzzlePieceCleared(UnityAction<PuzzlePiece> listener)
+        public void AddOnPuzzlePieceClearedListener(UnityAction<PuzzlePiece> listener)
         {
             onPuzzlePieceCleared.AddListener(listener);
+        }
+
+        public void AddOnGemsSwappedListener(UnityAction listener)
+        {
+            onGemsSwapped.AddListener(listener);
         }
 
         private void Initialize()
@@ -215,6 +221,8 @@ namespace Sacrimatch3
                 gem1.Swap(gem2);
 
                 Delay(0.5f, () => SetState(State.Matching));
+
+                onGemsSwapped?.Invoke();
 
                 return true;
             }

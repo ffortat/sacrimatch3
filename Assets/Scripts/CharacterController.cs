@@ -117,6 +117,23 @@ namespace Sacrimatch3
             onSacrifice?.Invoke();
         }
 
+        public void UseMove()
+        {
+            if (characterSelected)
+            {
+                characterSelected.UseMove();
+
+                if (characterSelected.MovesLeft == 0)
+                {
+                    // TODO il faut sacrifier un autre personnage
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Move used without a character");
+            }
+        }
+
         private void SetState(State state)
         {
             this.state = state;
@@ -154,6 +171,17 @@ namespace Sacrimatch3
         public Vector3 TargetPosition {
             set {
                 targetPosition = value - Vector3.right * (party.Count + 1);
+            }
+        }
+
+        public int MovesLeft { 
+            get {
+                if (characterSelected)
+                {
+
+                }
+
+                return 0;
             }
         }
     }

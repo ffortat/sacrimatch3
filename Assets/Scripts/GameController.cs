@@ -35,7 +35,8 @@ namespace Sacrimatch3
             characterController.AddOnSacrificeListener(OnSacrifice);
             characterController.Setup(doorController);
 
-            match3.AddOnPuzzlePieceCleared(doorController.ClearDoorPiece);
+            match3.AddOnPuzzlePieceClearedListener(doorController.ClearDoorPiece);
+            match3.AddOnGemsSwappedListener(characterController.UseMove);
 
             doorController.AddOnDoorOpenedListener(OpenDoor);
             doorController.AddOnAllDoorsOpenedListener(LevelComplete);

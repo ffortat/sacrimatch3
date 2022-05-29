@@ -39,6 +39,11 @@ namespace Sacrimatch3
             renderer.sprite = characterData.spriteDead;
         }
 
+        public void UseMove()
+        {
+            movesUsed += 1;
+        }
+
         public SOCharacter Data { get => characterData; }
         public Vector3 Position {
             get => transform.localPosition;
@@ -48,5 +53,6 @@ namespace Sacrimatch3
             get => targetPosition;
             set => targetPosition = value;
         }
+        public int MovesLeft { get => movesCapacity - movesUsed; }
     }
 }
