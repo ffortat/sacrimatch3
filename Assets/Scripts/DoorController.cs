@@ -27,16 +27,30 @@ namespace Sacrimatch3
                 doorList.Add(door);
             }
 
-            OpenNextDoor();
+            GoToNextDoor();
         }
 
-        private void OpenNextDoor()
+        public void ClearDoorPiece(PuzzlePiece doorPiece)
+        {
+            currentDoor.UnlockTile(doorPiece.Index);
+            // TODO Move piece visually outside of match3
+        }
+
+        public void OpenDoor()
+        {
+            // TODO open door
+            // TODO trigger party move
+            GoToNextDoor();
+        }
+
+        private void GoToNextDoor()
         {
             doorIndex += 1;
 
             if (doorIndex < doorList.Count)
             {
                 currentDoor = doorList[doorIndex];
+                currentDoor.AddOnDoorUnlockedListener(OpenDoor);
             }
             else
             {

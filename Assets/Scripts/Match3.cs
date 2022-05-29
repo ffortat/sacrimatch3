@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Sacrimatch3
 {
@@ -35,6 +36,7 @@ namespace Sacrimatch3
 
         private bool puzzleInit = false;
         private List<Sprite> puzzle = null;
+        private UnityEvent<PuzzlePiece> onPuzzlePieceCleared = new UnityEvent<PuzzlePiece>();
 
         private void Awake()
         {
@@ -133,6 +135,11 @@ namespace Sacrimatch3
             Initialize();
         }
 
+        public void AddOnPuzzlePieceCleared(UnityAction<PuzzlePiece> listener)
+        {
+            onPuzzlePieceCleared.AddListener(listener);
+        }
+
         private void Initialize()
         {
             SetState(State.Pause);
@@ -217,8 +224,7 @@ namespace Sacrimatch3
 
         private void ClearPuzzlePiece(PuzzlePiece puzzlePiece)
         {
-            // TODO we just cleared that puzzle piece
-            // TODO move it to our cleared list => handled by door controller ?
+            onPuzzlePieceCleared?.Invoke(puzzlePiece);
         }
 
         private void UpdateVisuals()
