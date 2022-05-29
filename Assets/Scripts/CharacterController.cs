@@ -32,6 +32,7 @@ namespace Sacrimatch3
         private GameObject characterHolder = null;
         private List<Character> party = new List<Character>();
         private UnityEvent onSacrifice = new UnityEvent();
+        private UnityEvent onMovesUpdated = new UnityEvent();
         private UnityEvent onMovesDepleted = new UnityEvent();
         private Character characterSelected = null;
 
@@ -103,6 +104,11 @@ namespace Sacrimatch3
             onSacrifice.AddListener(listener);
         }
 
+        public void AddOnMovesUpdatedListener(UnityAction listener)
+        {
+            onMovesUpdated.AddListener(listener);
+        }
+
         public void AddOnMovesDepletedListener(UnityAction listener)
         {
             onMovesDepleted.AddListener(listener);
@@ -126,6 +132,7 @@ namespace Sacrimatch3
             if (characterSelected)
             {
                 characterSelected.UseMove();
+                onMovesUpdated?.Invoke();
 
                 if (characterSelected.MovesLeft == 0)
                 {
@@ -154,6 +161,7 @@ namespace Sacrimatch3
         private void SelectCharacter(Character character)
         {
             characterSelected = character;
+            onMovesUpdated?.Invoke();
             Sacrifice(character);
         }
 
@@ -183,7 +191,7 @@ namespace Sacrimatch3
             get {
                 if (characterSelected)
                 {
-
+                    return characterSelected.MovesLeft;
                 }
 
                 return 0;

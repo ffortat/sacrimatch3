@@ -100,5 +100,7 @@ namespace Sacrimatch3
             
             match3.Resume();
         }
+
+        public CharacterController CharacterController { get => characterController; }
     }
 }
