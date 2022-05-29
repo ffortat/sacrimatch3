@@ -175,9 +175,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7e627d3cc34ad3d46a2409f8d1187651, type: 2}
   - {fileID: 11400000, guid: 6dd08977fd76dbf4db94f85d1ede88f5, type: 2}
   - {fileID: 11400000, guid: 6e838f4fb8c49a34db55a6d43a6b397f, type: 2}
-  - {fileID: 11400000, guid: 0350101d3a415e240805e75f8419e39d, type: 2}
-  - {fileID: 11400000, guid: 3fa45428f6e71d3409ffeae9252fd8aa, type: 2}
-  - {fileID: 11400000, guid: ddb4391eef640124d99a2d0420786521, type: 2}
   puzzlePiecePrefab: {fileID: 8340939862032060766, guid: 0c9e4b0c71f8aae4c9e527bb1d57f516, type: 3}
 --- !u!1 &519420028
 GameObject:
