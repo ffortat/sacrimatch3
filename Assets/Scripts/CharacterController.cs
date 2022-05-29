@@ -105,7 +105,9 @@ namespace Sacrimatch3
 
         public void Sacrifice(Character character)
         {
+            party.Remove(character);
             character.Sacrifice();
+            character.transform.parent = transform;
             onSacrifice?.Invoke();
         }
 

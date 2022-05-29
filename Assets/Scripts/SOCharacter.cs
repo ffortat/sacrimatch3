@@ -7,5 +7,6 @@ namespace Sacrimatch3
     {
         public int moves = 20;
         public Sprite sprite = null;
+        public Sprite spriteDead = null;
     }
 }

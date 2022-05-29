@@ -36,7 +36,7 @@ namespace Sacrimatch3
 
         public void Sacrifice()
         {
-            // TODO animer sacrifice
+            renderer.sprite = characterData.spriteDead;
         }
 
         public SOCharacter Data { get => characterData; }
