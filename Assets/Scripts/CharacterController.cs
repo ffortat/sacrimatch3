@@ -74,15 +74,21 @@ namespace Sacrimatch3
                     {
                         Vector3 selectPoint = Input.mousePosition;
                         selectPoint.z = -Camera.main.transform.position.z;
+                        Character foundCharacter = null;
 
                         party.ForEach((character) =>
                         {
                             if (characterSelected == null && character.ContainsPosition(Camera.main.ScreenToWorldPoint(selectPoint)))
                             {
-                                SelectCharacter(character);
-                                SetState(State.Stay);
+                                foundCharacter = character;
                             }
                         });
+
+                        if (foundCharacter != null)
+                        {
+                            SelectCharacter(foundCharacter);
+                            SetState(State.Stay);
+                        }
                     }
                     break;
                 case State.Stay:
