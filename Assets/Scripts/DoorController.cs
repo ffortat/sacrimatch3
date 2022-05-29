@@ -27,7 +27,7 @@ namespace Sacrimatch3
 
             for (int i = 0; i < doorCount; i += 1)
             {
-                Door door = Instantiate(doorPrefab, CameraController.TopLeft + new Vector3(doorSpacing * (i + 1), -2), Quaternion.identity, transform);
+                Door door = Instantiate(doorPrefab, CameraController.TopLeft + new Vector3(doorSpacing * (i + 1), -2, 1), Quaternion.identity, transform);
                 door.Setup(doors[Random.Range(0, doors.Count)]);
                 doorList.Add(door);
             }
