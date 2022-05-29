@@ -15,6 +15,7 @@ namespace Sacrimatch3
         private int doorIndex = -1;
         private Door currentDoor = null;
         private List<Door> doorList = new List<Door>();
+        private Grid<PuzzlePieceController> grid = null;
 
         private void Awake()
         {
@@ -51,6 +52,9 @@ namespace Sacrimatch3
             {
                 currentDoor = doorList[doorIndex];
                 currentDoor.AddOnDoorUnlockedListener(OpenDoor);
+
+                grid = new Grid<PuzzlePieceController>(currentDoor.TilesWidth, currentDoor.TilesHeight, 0.5f, new Vector3(10, -(currentDoor.TilesHeight / 4)), (Grid<PuzzlePieceController> grid, int x, int y) => new PuzzlePieceController(grid, x, y));
+                grid.ShowDebug = true;
             }
             else
             {

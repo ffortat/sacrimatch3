@@ -11,6 +11,8 @@ namespace Sacrimatch3
 
         private SODoor doorData = null;
 
+        private int tilesX = 0;
+        private int tilesY = 0;
         private List<int> unlockedTiles = new List<int>();
         private UnityEvent onDoorUnlocked = new UnityEvent();
         
@@ -18,6 +20,12 @@ namespace Sacrimatch3
         {
             this.doorData = doorData;
             renderer.sprite = doorData.sprite;
+            
+            if (doorData.tiles.Count > 0)
+            {
+                tilesX = Mathf.RoundToInt(doorData.sprite.rect.width / doorData.tiles[0].rect.width);
+                tilesY = Mathf.RoundToInt(doorData.sprite.rect.height / doorData.tiles[0].rect.height);
+            }
         }
 
         public void AddOnDoorUnlockedListener(UnityAction listener)
@@ -43,5 +51,7 @@ namespace Sacrimatch3
         }
 
         public List<Sprite> Tiles { get => doorData.tiles; }
+        public int TilesWidth { get => tilesX; }
+        public int TilesHeight { get => tilesY; }
     }
 }

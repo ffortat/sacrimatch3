@@ -30,6 +30,8 @@ namespace Sacrimatch3
         {
             characterController.AddOnSacrificeListener(OnSacrifice);
             characterController.Setup(doorController);
+
+            match3.AddOnPuzzlePieceCleared(doorController.ClearDoorPiece);
         }
 
         private void Start()
