@@ -39,10 +39,10 @@ namespace Sacrimatch3
         private void Awake()
         {
             characterHolder = new GameObject();
-            characterHolder.transform.position = CameraController.TopLeft + new Vector3(2, -2);
+            characterHolder.transform.position = CameraController.TopLeft + new Vector3(-5 - partySize, -2);
             characterHolder.transform.parent = transform;
 
-            targetPosition = characterHolder.transform.position;
+            targetPosition = CameraController.TopLeft + new Vector3(2, -2);
 
             for (int i = 0; i < partySize; i += 1)
             {
