@@ -22,7 +22,7 @@ namespace Sacrimatch3
         [SerializeField]
         private PuzzlePiece puzzlePiecePrefab = null;
 
-        private bool paused = false;
+        private bool initialized = false;
         private bool requestPause = false;
         private bool requestResume = false;
         private bool dragging = false;
@@ -93,6 +93,13 @@ namespace Sacrimatch3
                         requestPause = false;
                         SetState(State.Pause);
                     }
+                    else
+                    {
+                        if (requestResume)
+                        {
+                            requestResume = false;
+                        }
+                    }
                     break;
                 case State.Matching:
                     if (FindMatchAndDestroy())
@@ -135,7 +142,10 @@ namespace Sacrimatch3
         public void Activate(List<Sprite> puzzle = null)
         {
             gridContainer.SetActive(true);
-            Delay(0.1f, () => SetState(State.Matching));
+            Delay(0.1f, () => {
+                SetState(State.Matching);
+                initialized = true;
+            });
 
             if (puzzle != null && puzzle.Count > 0)
             {
@@ -146,6 +156,7 @@ namespace Sacrimatch3
         public void Reset()
         {
             SetState(State.Pause);
+            initialized = false;
 
             puzzleInit = false;
             puzzle = null;
@@ -161,13 +172,11 @@ namespace Sacrimatch3
         public void Pause()
         {
             requestPause = true;
-            paused = true;
         }
 
         public void Resume()
         {
             requestResume = true;
-            paused = false;
         }
 
         public void AddOnPuzzlePieceClearedListener(UnityAction<PuzzlePiece> listener)
@@ -465,6 +474,6 @@ namespace Sacrimatch3
             return mousePosition;
         }
 
-        public bool IsPaused { get => paused; }
+        public bool IsRunning { get => initialized; }
     }
 }
