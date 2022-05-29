@@ -27,6 +27,7 @@ namespace Sacrimatch3
         private float moveTimer = 0f;
         private State state = State.Stay;
         private Action moveCallback;
+        private Vector3 targetPosition = Vector3.zero;
 
         private GameObject characterHolder = null;
         private List<Character> party = new List<Character>();
@@ -41,6 +42,8 @@ namespace Sacrimatch3
             characterHolder.transform.position = CameraController.TopLeft + new Vector3(2, -2);
             characterHolder.transform.parent = transform;
 
+            targetPosition = characterHolder.transform.position;
+
             for (int i = 0; i < partySize; i += 1)
             {
                 Character character = Instantiate(characterPrefab, characterHolder.transform.position, Quaternion.identity, characterHolder.transform);
@@ -54,6 +57,7 @@ namespace Sacrimatch3
 
         private void Update()
         {
+            MoveParty();
             MoveCharacters();
 
             switch (state)
@@ -123,6 +127,13 @@ namespace Sacrimatch3
             Sacrifice(character);
         }
 
+        private void MoveParty()
+        {
+            Vector3 moveDir = (targetPosition - characterHolder.transform.position);
+            float moveSpeed = 10f;
+            characterHolder.transform.position += moveDir * moveSpeed * Time.deltaTime;
+        }
+
         private void MoveCharacters()
         {
             party.ForEach((Character character) =>
@@ -130,6 +141,12 @@ namespace Sacrimatch3
                 Vector3 moveDir = (character.TargetPosition - character.Position);
                 character.transform.position += moveDir * moveSpeed * Time.deltaTime;
             });
+        }
+
+        public Vector3 TargetPosition {
+            set {
+                targetPosition = value - Vector3.right * (party.Count + 1);
+            }
         }
     }
 }
