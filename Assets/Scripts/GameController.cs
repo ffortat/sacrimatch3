@@ -26,12 +26,19 @@ namespace Sacrimatch3
 
         private UnityEvent onPresentParty = new UnityEvent();
 
+        private GameLoader gameLoader = null;
+
         private void Awake()
         {
+            gameLoader = FindObjectOfType<GameLoader>();
+
             characterController.AddOnSacrificeListener(OnSacrifice);
             characterController.Setup(doorController);
 
             match3.AddOnPuzzlePieceCleared(doorController.ClearDoorPiece);
+
+            doorController.AddOnDoorOpenedListener(OpenDoor);
+            doorController.AddOnAllDoorsOpenedListener(LevelComplete);
         }
 
         private void Start()
@@ -54,6 +61,20 @@ namespace Sacrimatch3
         {
             Unzoom();
             StartMatch3();
+        }
+
+        private void OpenDoor(Door door)
+        {
+            characterController.TargetPosition = door.transform.position;
+            match3.Reset();
+            StartMatch3();
+        }
+
+        private void LevelComplete()
+        {
+            characterController.TargetPosition = CameraController.TopRight + new Vector3(10, -2);
+
+            gameLoader.EndGame();
         }
 
         private void ZoomToParty()
