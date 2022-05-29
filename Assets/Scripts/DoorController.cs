@@ -31,10 +31,17 @@ namespace Sacrimatch3
             GoToNextDoor();
         }
 
+        private void Update()
+        {
+            UpdateVisuals();
+        }
+
         public void ClearDoorPiece(PuzzlePiece doorPiece)
         {
             currentDoor.UnlockTile(doorPiece.Index);
-            // TODO Move piece visually outside of match3
+            currentDoor.GetTileCoordinates(doorPiece.Index, out int x, out int y);
+
+            grid.GetValue(x, y).PuzzlePiece = doorPiece;
         }
 
         public void OpenDoor()
@@ -60,6 +67,14 @@ namespace Sacrimatch3
             {
                 // TODO trigger end level
             }
+        }
+
+        private void UpdateVisuals()
+        {
+            grid.ForEach((int x, int y, PuzzlePieceController puzzlePieceController) =>
+            {
+                puzzlePieceController.Update();
+            });
         }
 
         public Door CurrentDoor { get => currentDoor; }

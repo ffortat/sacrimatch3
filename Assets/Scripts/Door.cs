@@ -50,6 +50,12 @@ namespace Sacrimatch3
             }
         }
 
+        public void GetTileCoordinates(int index, out int x, out int y)
+        {
+            x = index % tilesX;
+            y = tilesY - 1 - Mathf.FloorToInt(index / (float)tilesX);
+        }
+
         public List<Sprite> Tiles { get => doorData.tiles; }
         public int TilesWidth { get => tilesX; }
         public int TilesHeight { get => tilesY; }

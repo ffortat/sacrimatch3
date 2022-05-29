@@ -70,8 +70,8 @@ namespace Sacrimatch3
 
                 if (puzzlePiece)
                 {
-                    onPuzzlePieceClear?.Invoke(PuzzlePiece);
                     puzzlePiece.Clear();
+                    onPuzzlePieceClear?.Invoke(puzzlePiece);
                     puzzlePiece = null;
                 }
             }
