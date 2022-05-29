@@ -34,8 +34,6 @@ namespace Sacrimatch3
         private UnityEvent onSacrifice = new UnityEvent();
         private Character characterSelected = null;
 
-        private DoorController doorController = null;
-
         private void Awake()
         {
             characterHolder = new GameObject();
@@ -97,11 +95,6 @@ namespace Sacrimatch3
                     state = State.Stay;
                     break;
             }
-        }
-
-        public void Setup(DoorController doorController)
-        {
-            this.doorController = doorController;
         }
 
         public void AddOnSacrificeListener(UnityAction listener)

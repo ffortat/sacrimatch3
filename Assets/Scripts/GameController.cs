@@ -33,7 +33,6 @@ namespace Sacrimatch3
             gameLoader = FindObjectOfType<GameLoader>();
 
             characterController.AddOnSacrificeListener(OnSacrifice);
-            characterController.Setup(doorController);
 
             match3.AddOnPuzzlePieceClearedListener(doorController.ClearDoorPiece);
             match3.AddOnGemsSwappedListener(characterController.UseMove);
