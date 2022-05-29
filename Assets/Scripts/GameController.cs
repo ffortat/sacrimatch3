@@ -93,14 +93,12 @@ namespace Sacrimatch3
 
         private void StartMatch3()
         {
-            if (match3.IsPaused)
-            {
-                match3.Resume();
-            }
-            else
+            if (!match3.IsRunning)
             {
                 match3.Activate(doorController.CurrentDoor.Tiles);
             }
+            
+            match3.Resume();
         }
     }
 }
