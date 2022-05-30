@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -27,7 +28,11 @@ namespace Sacrimatch3
         [SerializeField]
         private Match3 match3 = null;
 
+        private bool isLost = false;
+        private bool isWon = false;
+        private float busyTimer = 0f;
         private State state = State.Pause;
+        private Action busyCallback;
         private UnityEvent onPresentParty = new UnityEvent();
         private UnityEvent onWin = new UnityEvent();
         private UnityEvent onLose = new UnityEvent();
@@ -56,7 +61,29 @@ namespace Sacrimatch3
 
         private void Update()
         {
-            
+            switch(state)
+            {
+                case State.Busy:
+                    busyTimer -= Time.deltaTime;
+                    if (busyTimer <= 0f)
+                    {
+                        busyCallback();
+                    }
+                    break;
+                case State.Popup:
+                    break;
+                case State.Play:
+                    if (isLost || isWon)
+                    {
+                        gameLoader.EndGame();
+                    }
+                    break;
+                case State.Pause:
+                    break;
+                default:
+                    SetState(State.Pause);
+                    break;
+            }
         }
 
         public void AddOnPresentPartyListener(UnityAction listener)
@@ -77,6 +104,11 @@ namespace Sacrimatch3
         public void Play()
         {
             SetState(State.Play);
+        }
+
+        public void Popup()
+        {
+            SetState(State.Popup);
         }
 
         private void PresentParty()
@@ -105,13 +137,13 @@ namespace Sacrimatch3
             characterController.TargetPosition = CameraController.TopRight + new Vector3(10, -2);
 
             onWin?.Invoke();
-
-            //gameLoader.EndGame();
+            isWon = true;
         }
 
         private void LevelLost()
         {
             onLose?.Invoke();
+            isLost = true;
         }
 
         private void ZoomToParty()
@@ -138,6 +170,13 @@ namespace Sacrimatch3
         private void SetState(State state)
         {
             this.state = state;
+        }
+
+        private void Delay(float delay, Action callback)
+        {
+            SetState(State.Busy);
+            busyTimer = delay;
+            busyCallback = callback;
         }
 
         public CharacterController CharacterController { get => characterController; }

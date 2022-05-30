@@ -54,6 +54,7 @@ namespace Sacrimatch3.UI
         private void PopupPresentParty()
         {
             ShowCharacterSelection();
+            gameController.Popup();
             popupCanvas.gameObject.SetActive(true);
 
             if (!introduction.gameObject.activeInHierarchy)
@@ -74,12 +75,14 @@ namespace Sacrimatch3.UI
 
         private void ShowPopupWin()
         {
+            gameController.Popup();
             popupCanvas.gameObject.SetActive(true);
             win.gameObject.SetActive(true);
         }
 
         private void ShowPopupLose()
         {
+            gameController.Popup();
             popupCanvas.gameObject.SetActive(true);
             lose.gameObject.SetActive(true);
         }
