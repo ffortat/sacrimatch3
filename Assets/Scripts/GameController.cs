@@ -127,7 +127,7 @@ namespace Sacrimatch3
 
         private void OpenDoor(Door door)
         {
-            characterController.TargetPosition = door.transform.position;
+            characterController.TargetPosition = new Vector3(door.transform.position.x, door.transform.position.y);
             match3.Reset();
             StartMatch3();
         }

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a1408ae4e2ed1e478d20010bfd848f0, type: 3}
   m_Name: Jim
   m_EditorClassIdentifier: 
-  moves: 50
+  moves: 30
   sprite: {fileID: 21300000, guid: eca0a3399f868ee488805c0cf9cce8a8, type: 3}
   spriteDead: {fileID: 21300000, guid: 7dc2809a681000c44a2951d6f8284a65, type: 3}
