@@ -19,7 +19,7 @@ namespace Sacrimatch3
         public void Setup(SODoor doorData)
         {
             this.doorData = doorData;
-            renderer.sprite = doorData.sprite;
+            renderer.sprite = doorData.wallSprite;
             
             if (doorData.tiles.Count > 0)
             {
@@ -41,6 +41,7 @@ namespace Sacrimatch3
 
                 if (unlockedTiles.Count == Tiles.Count)
                 {
+                    renderer.sprite = doorData.sprite;
                     onDoorUnlocked?.Invoke();
                 }
             }

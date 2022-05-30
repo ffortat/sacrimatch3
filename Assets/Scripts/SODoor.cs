@@ -7,6 +7,7 @@ namespace Sacrimatch3
     public class SODoor : ScriptableObject
     {
         public Sprite sprite = null;
+        public Sprite wallSprite = null;
         public List<Sprite> tiles = null;
     }
 }

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Door3
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: d990ad7ed9852fe4782dbbad9f823abd, type: 3}
+  wallSprite: {fileID: 21300000, guid: e0842c30efc2f2641a06be070acecff0, type: 3}
   tiles:
   - {fileID: -2045071514, guid: d0ab6604758e12847b1fd88c2559aa1c, type: 3}
   - {fileID: -27686789, guid: d0ab6604758e12847b1fd88c2559aa1c, type: 3}
