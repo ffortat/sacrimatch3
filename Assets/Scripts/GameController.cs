@@ -6,14 +6,17 @@ namespace Sacrimatch3
     public class GameController : MonoBehaviour
     {
         /* TODO
-         * Présenter le groupe de personnages face à une porte
-         * Mise en scène
-         * *phase de jeu*
-         * Déclenchement du passage de porte
-         * Déclenchement de séquence de sacrifice
          * Déclenchement de séquence de défaite
          * Déclenchement de séquence de victoire
          */
+        public enum State
+        {
+            Busy,
+            Popup,
+            Play,
+            Pause,
+        }
+
         [SerializeField]
         private CameraController cameraController = null;
 
@@ -24,7 +27,10 @@ namespace Sacrimatch3
         [SerializeField]
         private Match3 match3 = null;
 
+        private State state = State.Pause;
         private UnityEvent onPresentParty = new UnityEvent();
+        private UnityEvent onWin = new UnityEvent();
+        private UnityEvent onLose = new UnityEvent();
 
         private GameLoader gameLoader = null;
 
@@ -34,6 +40,7 @@ namespace Sacrimatch3
 
             characterController.AddOnSacrificeListener(OnSacrifice);
             characterController.AddOnMovesDepletedListener(PresentParty);
+            characterController.AddOnNoMovesLeftListener(LevelLost);
 
             match3.AddOnPuzzlePieceClearedListener(doorController.ClearDoorPiece);
             match3.AddOnGemsSwappedListener(characterController.UseMove);
@@ -47,9 +54,29 @@ namespace Sacrimatch3
             PresentParty();
         }
 
+        private void Update()
+        {
+            
+        }
+
         public void AddOnPresentPartyListener(UnityAction listener)
         {
             onPresentParty.AddListener(listener);
+        }
+
+        public void AddOnWinListener(UnityAction listener)
+        {
+            onWin.AddListener(listener);
+        }
+
+        public void AddOnLoseListener(UnityAction listener)
+        {
+            onLose.AddListener(listener);
+        }
+
+        public void Play()
+        {
+            SetState(State.Play);
         }
 
         private void PresentParty()
@@ -77,7 +104,14 @@ namespace Sacrimatch3
         {
             characterController.TargetPosition = CameraController.TopRight + new Vector3(10, -2);
 
-            gameLoader.EndGame();
+            onWin?.Invoke();
+
+            //gameLoader.EndGame();
+        }
+
+        private void LevelLost()
+        {
+            onLose?.Invoke();
         }
 
         private void ZoomToParty()
@@ -99,6 +133,11 @@ namespace Sacrimatch3
             }
             
             match3.Resume();
+        }
+
+        private void SetState(State state)
+        {
+            this.state = state;
         }
 
         public CharacterController CharacterController { get => characterController; }

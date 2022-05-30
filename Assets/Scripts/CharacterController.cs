@@ -34,6 +34,7 @@ namespace Sacrimatch3
         private UnityEvent onSacrifice = new UnityEvent();
         private UnityEvent onMovesUpdated = new UnityEvent();
         private UnityEvent onMovesDepleted = new UnityEvent();
+        private UnityEvent onNoMovesLeft = new UnityEvent();
         private Character characterSelected = null;
 
         private void Awake()
@@ -114,6 +115,11 @@ namespace Sacrimatch3
             onMovesDepleted.AddListener(listener);
         }
 
+        public void AddOnNoMovesLeftListener(UnityAction listener)
+        {
+            onNoMovesLeft.AddListener(listener);
+        }
+
         public void EnableSelection()
         {
             SetState(State.Select);
@@ -137,7 +143,15 @@ namespace Sacrimatch3
                 if (characterSelected.MovesLeft == 0)
                 {
                     characterSelected = null;
-                    onMovesDepleted?.Invoke();
+
+                    if (party.Count > 0)
+                    {
+                        onMovesDepleted?.Invoke();
+                    }
+                    else
+                    {
+                        onNoMovesLeft?.Invoke();
+                    }
                 }
             }
             else
